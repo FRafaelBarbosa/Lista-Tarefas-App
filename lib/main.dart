@@ -21,7 +21,29 @@ class ListaScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text("Lista de Tarefas"),
         ),
-        body: Column(),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.check_box, color: Colors.green),
+                  iconSize: 42.0,
+                  onPressed: () { },
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget> [
+                    Text("Lavar o carro bem lavado."),
+                    Text("13/09/2018")
+                  ]
+                )
+              ]
+            )
+          ],
+        ),
       );
   }
 }

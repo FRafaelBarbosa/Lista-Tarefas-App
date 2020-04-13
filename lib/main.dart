@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lista_tarefas_app/tarefa.dart';
 
 void main() {
   runApp(ListaTarefasApp());
@@ -13,22 +14,43 @@ class ListaTarefasApp extends StatelessWidget {
   }
 }
 
-class ListaScreen extends StatelessWidget {
+class ListaScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new ListaScreenState();
+  }
+}
 
-  Widget getItem() {
+class ListaScreenState extends State<ListaScreen> {
+  
+  List<Tarefa> tarefas = List<Tarefa>();
+  TextEditingController controller = new TextEditingController();
+
+  void adicionaTarefa(String nome) {
+    setState(() {
+      tarefas.add(Tarefa(nome));
+    });
+    controller.clear();
+  }
+
+  Widget getItem(Tarefa tarefa) {
       return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         IconButton(
-          icon: Icon(Icons.check_box, color: Colors.green),
+          icon: Icon(tarefa.concluida ? Icons.check_box : Icons.check_box_outline_blank, color: Colors.green),
           iconSize: 42.0,
-          onPressed: () { },
+          onPressed: () { 
+            setState(() {
+              tarefa.concluida = true;
+            });
+          },
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget> [
-            Text("Lavar o carro bem lavado."),
-            Text("13/09/2018")
+            Text(tarefa.nome),
+            Text(tarefa.data.toIso8601String())
           ]
         )
       ]
@@ -45,24 +67,23 @@ class ListaScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(8.0),
+              child: TextField(
+                controller: controller,
+                onSubmitted: adicionaTarefa
+              )
+            ),
             Expanded(
-              child: ListView(
-                children: <Widget>[
-                  getItem(),
-                  getItem(),
-                  getItem(),
-                  getItem(),
-                  getItem(),
-                  getItem(),
-                  getItem(),
-                  getItem(),
-                  getItem(),
-                  getItem(),
-                ],
+              child: ListView.builder(
+                itemCount: tarefas.length,
+                itemBuilder: (_, indice) {
+                  return getItem(tarefas[indice]);
+                },
               )
             )
           ],
         )
       );
   }
-}
+} //logica do sistema
